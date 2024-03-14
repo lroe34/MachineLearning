@@ -89,41 +89,31 @@ df6_min_max = min_max(df6)
 # print('VCR for df6:', VCR(df6))
 
 
-# # Assuming the VCR calculation and data preparation is done as per the provided code snippet
 
-# # Collecting VCR values for each dataset and scaling method
 vcr_values = {
     'SS': [VCR(df1_scaled), VCR(df2_scaled), VCR(df3_scaled), VCR(df4_scaled), VCR(df5_scaled), VCR(df6_scaled)],
     'MM': [VCR(df1_min_max), VCR(df2_min_max), VCR(df3_min_max), VCR(df4_min_max), VCR(df5_min_max), VCR(df6_min_max)],
     'Original': [VCR(df1_features), VCR(df2_features), VCR(df3_features), VCR(df4_features), VCR(df5), VCR(df6)]
 }
-# print all the values
 print(vcr_values)
-# Dataset labels
 datasets = ['df1', 'df2', 'df3', 'df4', 'df5', 'df6']
 
-# Setting up the figure size
 plt.figure(figsize=(10, 8))
 
-# Number of datasets
 n_datasets = len(datasets)
-# The x locations for the groups
 ind = np.arange(n_datasets)  
-# The width of the bars
 width = 0.25       
 
-# # Plotting each VCR type
-# plt.bar(ind, vcr_values['SS'], width, label='Standard Scaler')
-# plt.bar(ind + width, vcr_values['MM'], width, label='Min-Max Scaler')
-# plt.bar(ind + 2*width, vcr_values['Original'], width, label='Original')
+plt.bar(ind, vcr_values['SS'], width, label='Standard Scaler')
+plt.bar(ind + width, vcr_values['MM'], width, label='Min-Max Scaler')
+plt.bar(ind + 2*width, vcr_values['Original'], width, label='Original')
 
-# # Adding some text for labels, title, and custom x-axis tick labels, etc.
-# plt.ylabel('VCR Values')
-# plt.title('VCR by dataset and scaling method')
-# plt.xticks(ind + width, datasets)
-# plt.legend(loc='best')
+plt.ylabel('VCR Values')
+plt.title('VCR by dataset and scaling method')
+plt.xticks(ind + width, datasets)
+plt.legend(loc='best')
 
-
+plt.show()
 
 def plot_vcr_for_dataset(dataset_name, vcr_values):
     plt.figure(figsize=(6, 4))
@@ -138,6 +128,5 @@ def plot_vcr_for_dataset(dataset_name, vcr_values):
     plt.savefig(f'{dataset_name}_VCR_comparison.png')
     plt.close()
 
-# Plot and save a separate graph for each dataset
 for dataset in datasets:
     plot_vcr_for_dataset(dataset, vcr_values)
