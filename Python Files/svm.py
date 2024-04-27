@@ -1,22 +1,44 @@
 import numpy as np
-
-from sklearn import datasets
 from sklearn.model_selection import train_test_split
 from sklearn import svm
+from sklearn import datasets
+from sklearn.model_selection import cross_val_score
+from sklearn.metrics import classification_report
+
+X = [[0,0], [-2,0], [1,1], [10,1]]
+
+y = [0, 0, 1, 1]
+
+kernel_list = ['linear', 'poly', 'rbf', 'sigmoid']
+
+clf = svm.SVC()
+clf.fit(X, y)
+
+pred = clf.predict([[2.5,8]])
+
+predicted_labels = {}
+support_vectors = {}
+
+for kernel in kernel_list:
+    clf = svm.SVC(kernel=kernel, tol = 0.0001, gamma = 0.5)
+    clf.fit(X, y)
+    predicted_labels[kernel] = pred
+    support_vectors[kernel] = clf.support_vectors_
+
+print(predicted_labels)
+print(support_vectors)
 
 iris = datasets.load_iris()
 data = iris.data
 labels = iris.target
 
-test_size = 0.3
+kernel = 'rbf'
+clf = svm.SVC(kernel=kernel, gamma = 0.5, C=1.0)
 
-training_data, test_data, training_data_label, test_data_label = train_test_split(data, labels, test_size=test_size)
+print(classification_report(labels, clf.fit(data, labels).predict(data)))
 
-N = 7
+k = 10
+scores = cross_val_score(clf, data, labels, cv=k)
+print(scores)
+print(np.mean(scores))
 
-svm_learning_machine = svm.SVC(kernel='rbf', C=1.0, tol=1e-4, gamma=0.5)
-svm_learning_machine.fit(training_data, training_data_label)
-
-predicted_labels = svm_learning_machine.predict(test_data)
-
-print("Score: ", svm_learning_machine.score(test_data, test_data_label))
